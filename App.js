@@ -14,7 +14,6 @@ import { Image } from  "react-native";
 import Colors from "./src/res/Colors";
 import FavoriteStack from "./src/components/favorites/FavoriteStack";
 
-
 const Tabs = createBottomTabNavigator()
 
 const App = () => {

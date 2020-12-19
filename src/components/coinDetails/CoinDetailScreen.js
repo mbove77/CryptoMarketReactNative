@@ -20,8 +20,11 @@ class CoinDetailScreen extends Component {
     this.props.navigation.setOptions({title: coin.symbol})
 
     this.getMarkets(coin.id)
-    this.setState({coin})
-    console.log("coin", coin)
+    this.setState({coin}, () => {
+      this.getFavorite()
+    })
+
+    //console.log("coin", coin)
   }
 
   getSymbolIcon = (nameid) => {
@@ -34,7 +37,7 @@ class CoinDetailScreen extends Component {
     const url = `https://api.coinlore.net/api/coin/markets/?id=${coinId}`
     const markets = await Http.instance.get(url)
     this.setState({markets})
-    console.log("market", markets)
+    //console.log("market", markets)
   }
 
   getSections = (coin) => {
@@ -66,17 +69,35 @@ class CoinDetailScreen extends Component {
     }
   }
 
-  addFavorite() {
+  getFavorite = async () => {
+    try {
+      const key = `favorite${this.state.coin.id}`
+      const isFavorite = await Storage.instance.get(key);
+      if(isFavorite != null) {
+        this.setState({isFavorite : true})
+       } else {
+        this.setState({isFavorite : false})
+      }
+    } catch (e) {
+      console.log("Favorite error", e)
+    }
+  }
+
+  addFavorite = async () => {
     const coin = JSON.stringify(this.state.coin)
     const key = `favorite${this.state.coin.id}`
-    const stored = Storage.instance.store(key, coin)
+    const stored = await Storage.instance.store(key, coin)
     if (stored) {
       this.setState({isFavorite : true})
     }
   }
 
-  removeFavorite() {
-
+  removeFavorite = async () => {
+    const key = `favorite${this.state.coin.id}`
+    const removed = await Storage.instance.remove(key)
+    if(removed) {
+      this.setState({isFavorite : false})
+    }
   }
 
   render() {
