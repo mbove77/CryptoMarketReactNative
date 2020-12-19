@@ -69,7 +69,7 @@ class CoinDetailScreen extends Component {
 
   getFavorite = async () => {
     try {
-      const key = `favorite${this.state.coin.id}`
+      const key = `favorite-${this.state.coin.id}`
       const isFavorite = await Storage.instance.get(key);
       if(isFavorite != null) {
         this.setState({isFavorite : true})
@@ -83,7 +83,7 @@ class CoinDetailScreen extends Component {
 
   addFavorite = async () => {
     const coin = JSON.stringify(this.state.coin)
-    const key = `favorite${this.state.coin.id}`
+    const key = `favorite-${this.state.coin.id}`
     const stored = await Storage.instance.store(key, coin)
     if (stored) {
       this.setState({isFavorite : true})
@@ -100,7 +100,7 @@ class CoinDetailScreen extends Component {
       {
         text: "Remove",
         onPress: async () => {
-          const key = `favorite${this.state.coin.id}`
+          const key = `favorite-${this.state.coin.id}`
           await Storage.instance.remove(key)
           this.setState({isFavorite: false})
         },
