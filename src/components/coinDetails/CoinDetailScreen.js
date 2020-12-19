@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, SectionList, FlatList, StyleSheet, Text, View } from "react-native";
+import {Alert, Image, SectionList, FlatList, StyleSheet, Text, View } from "react-native";
 import Colors from "../../res/Colors";
 import Http from "../../libs/http";
 import CoinMarketItem from "./CoinMarketItem";
@@ -23,8 +23,6 @@ class CoinDetailScreen extends Component {
     this.setState({coin}, () => {
       this.getFavorite()
     })
-
-    //console.log("coin", coin)
   }
 
   getSymbolIcon = (nameid) => {
@@ -93,11 +91,22 @@ class CoinDetailScreen extends Component {
   }
 
   removeFavorite = async () => {
-    const key = `favorite${this.state.coin.id}`
-    const removed = await Storage.instance.remove(key)
-    if(removed) {
-      this.setState({isFavorite : false})
-    }
+    Alert.alert("Remove Favorite", "Are you sure you want remove this favorite?", [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: 'cancel'
+      },
+      {
+        text: "Remove",
+        onPress: async () => {
+          const key = `favorite${this.state.coin.id}`
+          await Storage.instance.remove(key)
+          this.setState({isFavorite: false})
+        },
+        style: 'destructive'
+      }
+    ])
   }
 
   render() {
