@@ -6,6 +6,7 @@ import CoinMarketItem from "./CoinMarketItem";
 import shortid from "shortid"
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import Storage from "../../libs/storage"
+import Currency from '../../libs/Currency';
 
 class CoinDetailScreen extends Component {
 
@@ -42,21 +43,17 @@ class CoinDetailScreen extends Component {
     return [
       {
         title: "Market cap",
-        data: [coin.market_cap_usd]
+        data: [`$ ${Currency.instance.format(coin.market_cap_usd)}` ]
       },
       {
         title: "Volume 24h",
-        data: [coin.volume24]
+        data: [`$ ${Currency.instance.format(coin.volume24)}`]
       },
       {
         title: "Change 24h",
-        data: [coin.percent_change_24h]
+        data: [`$ ${Currency.instance.format(coin.percent_change_24h)}`]
       },
     ]
-  }
-
-  currencyFormat = (num) => {
-    return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
   toggleFavorites = () => {

@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Colors from "../../res/Colors";
+import Currency from '../../libs/Currency';
 
 const CoinMarketItem = ({market}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.nameText}>{market.name}</Text>
-      <Text style={styles.priceText}>{market.price_usd}</Text>
+      <Text style={styles.priceText}>$ {Currency.instance.format(market.price_usd)}</Text>
     </View>
   );
 };
